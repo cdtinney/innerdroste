@@ -1,5 +1,59 @@
-var canvasId = 'canvas';
+"use strict";
+
 var testImagePath = 'img/innerspeaker.jpg';
+
+var canvasWrapperId = 'canvas-wrapper';
+var canvasId = 'canvas';
+
+var drosteCanvas = new DrosteCanvas(canvasId, canvasWrapperId);
+function DrosteCanvas(canvasId, containerId) {
+
+  this.canvasId = canvasId;
+
+  this.canvasEl = document.getElementById(canvasId);
+  this.containerEl = document.getElementById(containerId);
+
+  this.stage = undefined;
+
+  this.init = function() {
+    this.stage = new createjs.Stage(this.canvasId);
+  };
+
+  this.clear = function() {
+    this.init();
+  };
+
+  this.resizeToContainer = function() {
+    this.canvasEl.width = this.containerEl.clientWidth;
+    this.canvasEl.height = this.containerEl.clientHeight;
+  };
+
+  this.renderImage = function(image) {
+    renderBitmap(this.stage, new createjs.Bitmap(image));
+  };
+
+}
+
+function initialize() {
+
+  drosteCanvas.init();
+  drosteCanvas.resizeToContainer();
+
+  loadImage(testImagePath, function(image) {
+    drosteCanvas.renderImage(image);
+  });
+
+}
+
+function loadImage(src, onLoad) {
+
+  var image = new Image();
+  image.src = src;
+  image.onload = function() {
+    onLoad(image);
+  };
+
+}
 
 function onFileChange(files) {
 
@@ -8,44 +62,25 @@ function onFileChange(files) {
     return;
   }
 
-  var stage = createNewStage();
+  // Clear the canvas.
+  drosteCanvas.clear();
+
+  // Resize the container.
+  drosteCanvas.resizeToContainer();
 
   // Initialize a reader for the file.
   var reader = new FileReader();  
-  reader.onload = function(e) {
+  reader.onload = function(event) {
 
-    // Clearing doesn't seem to work -- just create a new stage.
-    // Then, create a new image from the base64 encoded result of the reader, and
+    // Create a new image from the base64 encoded result of the reader, and
     // render it.
-    renderImage(stage, createImage(e.target.result));
+    loadImage(event.target.result, function(image) {
+      drosteCanvas.renderImage(image);
+    });
 
   };
 
   reader.readAsDataURL(file);
-
-}
-
-function initCanvas() {
-  renderImage(createNewStage(), createImage(testImagePath));
-}
-
-function createNewStage() {
-  return new createjs.Stage(canvasId);
-}
-
-function createImage(src) {
-  var image = new Image();
-  image.src = src;
-  return image;
-}
-
-function renderImage(stage, image) {
-
-  // Once we've loaded the image into a bitmap object, render it!
-  var bitmap = new createjs.Bitmap(image);
-  bitmap.image.onload = function() {  
-    renderBitmap(stage, bitmap);
-  };
 
 }
 

@@ -24,18 +24,31 @@
 
   </head>
 
-  <body onload='initCanvas()'>
-    
-    <div class='display-4 text-center'>innerdroste</div>
-  
-    <div class='container-fluid'>
+  <body onload='initialize()'>
 
-      <div class='d-flex justify-content-center canvas-wrapper'>
-        <canvas id='canvas' class='canvas-wrapper__canvas mw-100 mh-100' width='500px' height='400px'></canvas>
+    <div class='root-container'>
+    
+      <div class='root-container__title display-4 text-center'>innerdroste</div>
+      
+      <div class='root-container__file-input-wrapper'>  
+        <input 
+          id='file' 
+          class='root-container__file-input-wrapper__file-input' 
+          name='file' 
+          type='file' 
+          accept='image/*' 
+          onchange='onFileChange(this.files)'
+        />
+        <label 
+          class='root-container__file-input-wrapper__label' 
+          for='file'
+        >
+          Choose an image
+        </label>
       </div>
 
-      <div class='d-flex justify-content-center file-input'>
-        <input type='file' onchange='onFileChange(this.files)'>
+      <div id='canvas-wrapper' class='root-container__canvas-wrapper'>        
+        <canvas id='canvas' class='root-container__canvas-wrapper__canvas'></canvas>
       </div>
 
     </div>
