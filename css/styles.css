@@ -11,10 +11,6 @@ html, body {
 
 .root-container__title {
   cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   padding: 5px;
 }
 
