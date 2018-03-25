@@ -32,16 +32,21 @@ function DrosteCanvas(canvasId, containerId) {
     renderBitmap(this.stage, new createjs.Bitmap(image));
   };
 
-}
+  this.getImageData = function() {
 
-function initialize() {
+    // TODO Need to duplicate canvas element, clip it, and then call
+    // toDataURL on that canvas.
+    return this.canvasEl.toDataURL('image/png', 1);
+  };
 
-  drosteCanvas.init();
-  drosteCanvas.resizeToContainer();
+  this.downloadImage = function(link) {
 
-  loadImage(testImagePath, function(image) {
-    drosteCanvas.renderImage(image);
-  });
+    link.href = this.getImageData();
+
+    // TODO Use the original file name 
+    link.download = 'innerdroste.png';
+
+  }
 
 }
 
@@ -129,7 +134,8 @@ function renderBitmap(stage, bitmap) {
 
     // Reduce the opacity of it, but only if it's below a threshold.
     if (i < 1) {
-      scaledBitmap.alpha = i + 0.3; // TODO 0.1 should be a modifier stored in JS
+      // TODO 0.1 should be a modifier, by user
+      scaledBitmap.alpha = i + 0.3; 
     }
 
     // TODO Only apply the mask if 'circular' is selected.
@@ -228,10 +234,12 @@ function createCenteredScaledBitmap(bitmap, canvasWidth, canvasHeight, imageWidt
 }
 
 function getCenteredCoordinates(parentDimensions, childDimensions, xOffset, yOffset) {
+
   return {
     x: xOffset + ((parentDimensions.width - childDimensions.width) / 2),
     y: yOffset + ((parentDimensions.height - childDimensions.height) / 2)
   };
+  
 }
 
 /**
@@ -241,9 +249,48 @@ function getCenteredCoordinates(parentDimensions, childDimensions, xOffset, yOff
  * @return {[type]}        [description]
  */
 function getScaledDimensions(bitmap) {
+
   var bounds = bitmap.getBounds();
   return { 
     width: bounds.width * bitmap.scaleX, 
     height: bounds.height * bitmap.scaleY 
   };
+
+}
+
+/**
+ * Adds all event listeners for user interaction.
+ */
+function addEventListeners() {
+
+  function addEventListenerToElem(elemId, event, callback) {
+    document.getElementById(elemId).addEventListener(event, callback);
+  };
+
+  addEventListenerToElem('file-input', 'change', function() {
+    onFileChange(this.files);
+  });
+
+  addEventListenerToElem('download', 'click', function() {
+    drosteCanvas.downloadImage(this);
+  });
+
+}
+
+/**
+ * Initializes the app - adds event listenres for buttons,
+ * initializes the canvases and resizes it to fit the window,
+ * and loads the default test image.
+ */
+function initialize() {
+
+  addEventListeners();
+
+  drosteCanvas.init();
+  drosteCanvas.resizeToContainer();
+
+  loadImage(testImagePath, function(image) {
+    drosteCanvas.renderImage(image);
+  });
+
 }

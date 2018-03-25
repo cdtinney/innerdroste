@@ -25,25 +25,29 @@ html, body {
   margin: 10px;
 }
 
-.root-container__file-input-wrapper {
+.root-container__actions {
   display: flex;
   justify-content: center;
   padding: 5px;
 }
 
-.root-container__file-input-wrapper__file-input {
+.root-container__actions__file-input-wrapper__file-input {
   display: none;
 }
 
-.root-container__file-input-wrapper__label {
-  cursor: pointer;
+.custom-button {
+  height: 2em;
+  margin: 0 2px;
   padding: 4px 8px;
+  cursor: pointer;
+  color: #212529 !important;
   border: 1px solid rgba(150, 150, 150, 0.5);
 }
 
-.root-container__file-input-wrapper__label:hover {
+.custom-button:hover {
   border: 1px solid rgba(50, 50, 125, 0.75);
   border-radius: 3px;
+  text-decoration: none;
 }
 
 @media only screen and (max-width: 320px) {
