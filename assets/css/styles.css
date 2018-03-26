@@ -2,32 +2,32 @@ html, body {
   height: 100%;
 }
 
-.root-container {
+.innerdroste {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
 }
 
-.root-container__title {
+.innerdroste__title {
   cursor: default;
   padding: 5px;
 }
 
-.root-container__canvas-wrapper {  
+.innerdroste__canvas-container {  
   display: flex;
   justify-content: center;
   flex-grow: 1;
   margin: 10px;
 }
 
-.root-container__actions {
+.innerdroste__actions {
   display: flex;
   justify-content: center;
   padding: 5px;
 }
 
-.root-container__actions__file-input-wrapper__file-input {
+.innerdroste__actions__file-input-wrapper__file-input {
   display: none;
 }
 

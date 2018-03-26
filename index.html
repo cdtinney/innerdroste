@@ -16,7 +16,7 @@
       integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
     <!-- Custom styles -->
-    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <link rel="stylesheet" href="assets/css/styles.css?v=1.0">
 
     <!--[if lt IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
@@ -26,16 +26,16 @@
 
   <body onload='initialize()'>
 
-    <div class='root-container'>
+    <div class='innerdroste'>
     
-      <div class='root-container__title display-4 text-center'>innerdroste</div>
+      <div class='innerdroste__title display-4 text-center'>innerdroste</div>
       
-      <div class='root-container__actions'>
+      <div class='innerdroste__actions'>
 
-        <div class='root-container__actions__file-input-wrapper'>  
+        <div class='innerdroste__actions__file-input-wrapper'>  
           <input 
             id='file-input' 
-            class='root-container__actions__file-input-wrapper__file-input' 
+            class='innerdroste__actions__file-input-wrapper__file-input' 
             name='file' 
             type='file' 
             accept='image/*'
@@ -52,8 +52,7 @@
 
       </div>
 
-      <div id='canvas-wrapper' class='root-container__canvas-wrapper'>        
-        <canvas id='canvas' class='root-container__canvas-wrapper__canvas'></canvas>
+      <div id="canvas-container" class="innerdroste__canvas-container">
       </div>
 
     </div>
@@ -66,11 +65,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" 
       integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 
-    <!-- EaselJS -->
-    <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+    <!-- Konva -->
+    <script src="https://cdn.rawgit.com/konvajs/konva/2.0.2/konva.min.js"></script>
 
     <!-- Main script -->
-    <script src="js/main.js"></script>
+    <script src="assets/js/main.js"></script>
 
   </body>
 
