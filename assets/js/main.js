@@ -123,8 +123,10 @@ function downloadURI(uri, name) {
 
 /**
  * Rectangular Droste effect strategy class. Given a stage and
- * image, it iteratively generates layers such that each layer
- * is smaller than the last. No clipping is done.
+ * image, it iteratively generates layers with the following properties:
+ *  - Each layer is 10% smaller than the last.
+ *  - Each layer is 15% less opaque than the last.
+ *  - Each layer has the same shape (no clipping).
  *
  * It provides a single public method,
  *  {@link RectangularDrosteEffectStrategy#apply}.
@@ -132,14 +134,20 @@ function downloadURI(uri, name) {
 function RectangularDrosteEffectStrategy() {
   // Scaling constants, in percentages.
   var scaling = {
-    initial: 0.9,
+    initial: 0.85,
     final: 0, // Exclusive
-    interval: 0.15,
+    interval: 0.10,
   };
 
   function cloneLayer(layer) {
     // NOTE: This will not clone width/height values.
     return layer.clone();
+  }
+
+  function opacifyLayer(layer, scale) {
+    return layer.clone({
+      opacity: scale,
+    });
   }
 
   function scaleLayer(layer, scale) {
@@ -181,11 +189,15 @@ function RectangularDrosteEffectStrategy() {
       i > scaling.final;
       i -= scaling.interval
     ) {
-      layers.push(
-        centerLayer(
-          rootLayer, 
-          scaleLayer(
-            cloneLayer(rootLayer), i)));
+      // Do a bunch of operations in order. Each method is
+      // immutable (i.e. returns new objects).
+      var clonedLayer = cloneLayer(rootLayer);
+      var opacifiedLayer = opacifyLayer(clonedLayer, i);
+      var scaledLayer = scaleLayer(opacifiedLayer, i);
+      // Centering MUST be done after scaling.
+      var centeredLayer = centerLayer(rootLayer, scaledLayer);
+      // All done!
+      layers.push(centeredLayer);
     }
     return layers;
   }
