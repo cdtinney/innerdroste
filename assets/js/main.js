@@ -182,22 +182,34 @@ function RectangularDrosteEffectStrategy() {
     });
   }
 
+  function blurLayer(layer, scale) {
+    var clonedLayer = layer.clone({
+      // Blurs more as the scale increases.
+      blurRadius: 1 * (1 - scale),
+    });
+    clonedLayer.cache();
+    clonedLayer.filters([Konva.Filters.Blur]);
+    return clonedLayer;
+  }
+
   function generateLayers(stage, rootLayer) {
     var layers = [];
     for (
-      var i = scaling.initial;
-      i > scaling.final;
-      i -= scaling.interval
+      var scale = scaling.initial;
+      scale > scaling.final;
+      scale -= scaling.interval
     ) {
       // Do a bunch of operations in order. Each method is
       // immutable (i.e. returns new objects).
       var clonedLayer = cloneLayer(rootLayer);
-      var opacifiedLayer = opacifyLayer(clonedLayer, i);
-      var scaledLayer = scaleLayer(opacifiedLayer, i);
+      var opacifiedLayer = opacifyLayer(clonedLayer, scale);
+      var scaledLayer = scaleLayer(opacifiedLayer, scale);
       // Centering MUST be done after scaling.
       var centeredLayer = centerLayer(rootLayer, scaledLayer);
+      // Filters MUST be applied last since they require caching.
+      var blurredLayer = blurLayer(centeredLayer, scale);
       // All done!
-      layers.push(centeredLayer);
+      layers.push(blurredLayer);
     }
     return layers;
   }
